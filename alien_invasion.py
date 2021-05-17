@@ -3,6 +3,7 @@ import pygame
 from settings import Settings 
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     """管理游戏资源和行为的类"""
@@ -21,6 +22,15 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion - 外星人入侵")
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
+
+    def _create_fleet(self):
+        """创建外星人群。"""
+        # 创建一个外星人
+        alien = Alien(self)
+        self.aliens.add(alien)
 
     def _check_events(self):
         """响应按键和鼠标"""
@@ -69,6 +79,7 @@ class AlienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         # 让最近绘制的屏幕可见。
         pygame.display.flip()
     def _update_bullets(self):
