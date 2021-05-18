@@ -10,3 +10,8 @@ gitaddip_pub_rsa
 gitaddip_pub_rsa_xiaoxin
 
 test git fetch + git merge
+
+1.智慧安检系统单节点minio磁盘5增加stat-ssd 1.92T，新增raid0
+2.智慧车站afc系统升级。
+3.智慧车站视频分析中间件从k8s集群迁到单机部署。redis、mongodb、emqx。
+4.智慧安检航天中心海康平台ntp时钟服务删除，两台服务器上的删了，在删除手动添加的ntp服务，否则海康平台还是会下发时钟地址到终端。
