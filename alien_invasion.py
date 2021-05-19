@@ -136,7 +136,7 @@ class AlienInvasion:
         # 删除发生碰撞的子弹和外星人。
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
-        
+
         if not self.aliens:
             # 删除现有的子弹并创建一群外星人。
             self.bullets.empty()
@@ -147,6 +147,10 @@ class AlienInvasion:
          """检查是否有外星人位于屏幕边缘。"""
          self._check_fleet_edges()
          self.aliens.update()
+
+         # 检查外星人和飞船之间的碰撞。
+         if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!!!")
 
     def run_game(self):
         """开始游戏的主循环"""
