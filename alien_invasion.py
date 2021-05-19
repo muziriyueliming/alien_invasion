@@ -55,6 +55,19 @@ class AlienInvasion:
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
 
+    def _check_fleet_edges(self):
+        """有外星人到达边缘时采取相应的措施。"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """将正群外星人下移，并改变它们的方向。"""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
+
     def _check_events(self):
         """响应按键和鼠标"""
         for event in pygame.event.get():
@@ -107,13 +120,23 @@ class AlienInvasion:
         pygame.display.flip()
     def _update_bullets(self):
         """更新子弹位置并删除消失的子弹。"""
-        #更新子弹的位置。
+        # 检查是否有子弹击中外星人。
+        #  如果是，就删除相应的子弹和外星人。
+
         self.bullets.update()
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <=0:
                 self.bullets.remove(bullet)
         #查看没有消失的子弹数量
         #print(len(self.bullets))
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.aliens, True, True)
+
+    def _update_aliens(self):
+         """更新外星人群中所有外星人的位置。""" 
+         """检查是否有外星人位于屏幕边缘。"""
+         self._check_fleet_edges()
+         self.aliens.update()
 
     def run_game(self):
         """开始游戏的主循环"""
@@ -121,6 +144,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
 
             
