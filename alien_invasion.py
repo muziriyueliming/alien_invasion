@@ -72,6 +72,15 @@ class AlienInvasion:
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
+    def _check_aliens_bottom(self):
+        """检测是否有外星人到达屏幕低端。"""
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # 像飞船被撞一样处理。
+                self._ship_hit()
+                break
+
     def _check_events(self):
         """响应按键和鼠标"""
         for event in pygame.event.get():
@@ -155,6 +164,10 @@ class AlienInvasion:
         # 检查外星人和飞船之间的碰撞。
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
            self._ship_hit()
+
+        # 检测是否有外星人到达屏幕低端。
+        self._check_aliens_bottom()
+
 
     def _ship_hit(self):
         """相应飞船被外星人撞到。"""
