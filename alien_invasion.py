@@ -129,8 +129,14 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
         #查看没有消失的子弹数量
         #print(len(self.bullets))
+        self._check_bullet_alien_collision()
+
+    def _check_bullet_alien_collision(self):
+        """响应子弹和外星人碰撞。"""
+        # 删除发生碰撞的子弹和外星人。
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
+        
         if not self.aliens:
             # 删除现有的子弹并创建一群外星人。
             self.bullets.empty()
