@@ -1,6 +1,8 @@
 import sys
+from time import sleep
 import pygame
 from settings import Settings 
+from game_stats import Game_stats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -20,6 +22,8 @@ class AlienInvasion:
         # self.settings.screen_height = self.screen.get_rect().height
 
         pygame.display.set_caption("Alien Invasion - 外星人入侵")
+        # 创建一个用于存储游戏统计信息的实例。
+        self.stats = Game_stats(self)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -143,14 +147,32 @@ class AlienInvasion:
             self._create_fleet()
 
     def _update_aliens(self):
-         """更新外星人群中所有外星人的位置。""" 
-         """检查是否有外星人位于屏幕边缘。"""
-         self._check_fleet_edges()
-         self.aliens.update()
+        """更新外星人群中所有外星人的位置。""" 
+        """检查是否有外星人位于屏幕边缘。"""
+        self._check_fleet_edges()
+        self.aliens.update()
 
-         # 检查外星人和飞船之间的碰撞。
-         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!!!")
+        # 检查外星人和飞船之间的碰撞。
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+           self._ship_hit()
+
+    def _ship_hit(self):
+        """相应飞船被外星人撞到。"""
+
+        # 将ship_left减1。
+        self.stats.ships_left -= 1
+       # print(self.stats.ships_left)
+
+        # 清空余下的外星人和子弹。
+        self.aliens.empty()
+        self.bullets.empty()
+
+        # 创建一群新的外星人，并将飞船放到屏幕低端的中央。
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # 暂停
+        sleep(1.5)
 
     def run_game(self):
         """开始游戏的主循环"""
