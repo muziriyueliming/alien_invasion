@@ -191,11 +191,12 @@ class AlienInvasion:
         """响应子弹和外星人碰撞。"""
         # 删除发生碰撞的子弹和外星人。
         collisions = pygame.sprite.groupcollide(
-            self.bullets, self.aliens, True, True)
+            self.bullets, self.aliens, False, True)
 
         if collisions:
-            self.stats.score += self.settings.alien_points
-            self.sb.prep_score()
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+                self.sb.prep_score()
 
         if not self.aliens:
             # 删除现有的子弹并创建一群外星人。
