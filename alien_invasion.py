@@ -102,6 +102,8 @@ class AlienInvasion:
         """在玩家单机Play按钮是开始新游戏。"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # 重置游戏设置。
+            self.settings.initialize_dynamic_settings()
             # 重置游戏统计信息。
             self.stats.reset_stats()
             self.stats.game_active = True
@@ -148,6 +150,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+
     def _update_screen(self):
         """更新屏幕上的图像并切换到新屏幕。"""
         self.screen.fill(self.settings.bg_color)
@@ -161,6 +164,7 @@ class AlienInvasion:
             self.play_button.draw_button()
         # 让最近绘制的屏幕可见。
         pygame.display.flip()
+
     def _update_bullets(self):
         """更新子弹位置并删除消失的子弹。"""
         # 检查是否有子弹击中外星人。
@@ -184,6 +188,7 @@ class AlienInvasion:
             # 删除现有的子弹并创建一群外星人。
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _update_aliens(self):
         """更新外星人群中所有外星人的位置。""" 
