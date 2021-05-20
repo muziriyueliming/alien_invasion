@@ -113,7 +113,6 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
-            self.sb.prep_level()
 
             # 清空余下的外星人和子弹。
             self.aliens.empty()
@@ -208,7 +207,6 @@ class AlienInvasion:
     
             # 提高等级
             self.stats.level += 1
-            self.sb.prep_level()
     
     def _update_aliens(self):
         """更新外星人群中所有外星人的位置。""" 
