@@ -113,6 +113,8 @@ class AlienInvasion:
             # 创建一群新的外星人并让飞船居中。
             self._create_fleet()
             self.ship.center_ship()
+            # 隐藏鼠标光标。
+            pygame.mouse.set_visible(False)
 
 
     def _check_keydown_events(self, event):
@@ -198,7 +200,7 @@ class AlienInvasion:
 
 
     def _ship_hit(self):
-        """相应飞船被外星人撞到。"""
+        """响应飞船被外星人撞到。"""
         if self.stats.ships_left > 0:
             # 将ship_left减1。
             self.stats.ships_left -= 1
@@ -213,6 +215,8 @@ class AlienInvasion:
             sleep(1.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
+
 
     def run_game(self):
         """开始游戏的主循环"""
